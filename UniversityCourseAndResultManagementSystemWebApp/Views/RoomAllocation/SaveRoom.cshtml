@@ -1,0 +1,131 @@
+﻿
+
+@{
+   // Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SaveRoom</title>
+    <link href="~/CSS/jquery-ui.min.css" rel="stylesheet" />
+</head>
+<body>
+<div>
+
+   @ViewBag.Message
+
+
+    <form method="post" id="myForm">
+        <fieldset>
+            <legend>Allocate ClassRooms</legend>
+            <table>
+                <tr>
+                    <td>
+                        <label>Department</label>
+                    </td>
+                    <td>
+                        <select name="DepartmentId" id="DepartmentId">
+                            <option value="">Select...</option>
+                            @foreach (var department in ViewBag.ShowDept)
+                            {
+                                <option value="@department.Id">@department.Name</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Course</label>
+                    </td>
+                    <td>
+                        <select name="CourseId" id="CourseId"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Room No.</label>
+                    </td>
+                    <td>
+                        <select name="RoomId" id="RoomId">
+                            <option value="">Select...</option>
+                            @foreach (var room in ViewBag.ShowRoom)
+                            {
+                                <option value="@room.Id">@room.RoomName</option>
+                            }
+                        </select>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Day</label>
+                    </td>
+                    <td>
+                        <select name="DayId" id="DayId">
+                            <option value="">Select...</option>
+                            @foreach (var day in ViewBag.ShowDays)
+                            {
+                                <option value="@day.Id">@day.DayName</option>
+                            }
+                        </select>
+                       
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="time" id="StartTime" name="StartTime"/>
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        <input type="time" id="EndTime" name="EndTime"/>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Allocate"/>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+    <script src="~/Scripts/jquery-2.2.0.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $("#DepartmentId").change(function () {
+
+                var deptId = $("#DepartmentId").val();
+                $("#CourseId").empty();
+                var json = { departmentId: deptId };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetCoursesByDepartmentId", "RoomAllocation")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        $("#CourseId").append('<option value="">Select</option>');
+                        $.each(data, function (key, value) {
+
+                            $("#CourseId").append('<option value=' + value.Id + '>' + value.Name + '</option>');
+
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
+</body>
+</html>

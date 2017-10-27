@@ -1,0 +1,136 @@
+﻿@using System.Data.Entity.ModelConfiguration.Conventions
+@using UniversityCourseAndResultManagementSystemWebApp.Models
+
+@{
+   // Layout = null;
+    List<Department> departments = ViewBag.department;
+    List<Semester> semesters = ViewBag.semester;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Save</title>
+    <style>
+        label.error {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <form id="myForm" method="POST">
+        <div>
+            <table align="center" style="width: 593px; height: 141px; border: none ">
+                <tr>
+                    <td style="border: none" class="auto-style1">
+                        <fieldset style="text-align: center; height: auto; width: 585px;">
+                            <legend style="text-align: left; font-size: 25px;">Save Course</legend><br />
+                            @ViewBag.message
+                            <br />
+                            <table align="center" style="width: 527px; height: 197px">
+                                <tr>
+                                    <td style="text-align: left; width: 79px">Code</td>
+                                    <td style="text-align: left"><input type="text" name="Code" id="Code" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left; width: 79px">Name</td>
+                                    <td style="text-align: left"><input type="text" name="Name" id="Name" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left; width: 79px">Credit</td>
+                                    <td style="text-align: left"><input type="text" name="Credit" id="Credit" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left; width: 79px">Description</td>
+                                    @*<td style="text-align: left"><input type="text" name="Description" id="Description" /></td>*@
+                                    <td style="text-align: left"><textarea name="Description"id="Description" rows="2" cols="21"></textarea></td>
+                                
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left; width: 79px">Department</td>
+                                    <td style="text-align: left">
+                                        <select name="Department" id="Department" style="width: 173px">
+                                            <option value="">Select...</option>
+                                            @foreach (var dept in departments)
+                                            {
+                                                <option value="@dept.Id">@dept.Code</option>
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left; width: 79px">Semester</td>
+                                    <td style="text-align: left">
+                                        <select name="Semester" id="Semester" style="width: 173px">
+                                            <option value="">Select...</option>
+                                            @foreach (var semester in semesters)
+                                            {
+                                                <option value="@semester.Id">@semester.Name</option> 
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><input type="submit" value="Save"/></td>
+                                </tr>
+                            </table>
+                            <br />
+                            <br />
+                        </fieldset>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    
+
+    <script src="~/Scripts/jquery-2.2.0.js"></script>
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            $("#myForm").validate({
+                rules: {
+                    Code: {
+                        required: true,
+                        minlength: 5
+
+                    },
+                    Name: {
+                        required: true
+
+
+                    },
+                    Credit: {
+                        required: true,
+                        number : true,
+                        range: [0.5, 5.0]
+                    },
+                    Description: {
+                        required: true
+                    },
+                    Department: {
+                        required: true
+                    },
+                    Semester : {
+                        required : true
+                    }
+                    
+                },
+                messages: {
+                    Credit : {
+                        range : "Please enter a value between 0.5 and 5.0"
+                    }
+                    
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

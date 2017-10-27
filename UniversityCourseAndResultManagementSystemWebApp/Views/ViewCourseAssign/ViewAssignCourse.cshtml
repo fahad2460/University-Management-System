@@ -1,0 +1,97 @@
+﻿
+@{
+   // Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewAssignCourse</title>
+    <style>
+        #tableclass table, th, td {
+            border-collapse: collapse;
+            border: 1px solid black;
+            width: 266px;
+        }
+
+        #tableclass th {
+            background-color: #00FF00;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <div>
+        <form id="myForm" runat="server" method="POST">
+            <div>
+                <table align="center" style="width: 593px; height: 141px; border: none ">
+                    <tr>
+                        <td style="border: none" class="auto-style1">
+                            <fieldset style="text-align: center; height: auto; width: 585px;">
+                                <legend style="text-align: left; font-size: 25px;">View Course Statics</legend><br />
+                                <table align="center" style="border: none; width: 400px;">
+                                    <tr>
+                                        <td style="border: none; width: 150px; text-align: right">Department&nbsp;&nbsp;</td>
+                                        <td style="border: none; text-align: left;">
+                                            <select name="DepartmentId" id="DepartmentId" style="width: 171px;">
+                                                <option value="">Select...</option>
+                                                @foreach (var dept in ViewBag.departments)
+                                                {
+                                                    <option value="@dept.Id">@dept.Code</option>
+                                                }
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table><br/>
+                                <div id="tableclass">
+                                    <table align="center" style="width: 530px;" id="Table">
+                                        <tr>
+                                            <th style="text-align: center">Code</th>
+                                            <th style="text-align: center">Name/Tittle</th>
+                                            <th style="text-align: center">Semester</th>
+                                            <th style="text-align: center">Teacher</th>
+                                        </tr>
+                                       
+                                    </table>
+                                </div>
+                                <br />
+                                <br />
+                            </fieldset>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form> 
+    </div>
+
+    <script src="~/Scripts/jquery-2.2.0.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#DepartmentId").change(function () {
+
+                var deptId = $("#DepartmentId").val();
+               $("#Table").empty();
+                var json = { departmentId:deptId };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetCourseByDepartmentId", "ViewCourseAssign")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        //alert(data);
+                        $("#Table").append(' <tr><th style="text-align: center">Code</th><th style="text-align: center">Name/Tittle</th><th style="text-align: center">Semester</th><th style="text-align: center">Teacher</th></tr>');
+                        $.each(data, function (key, value) {
+                            $("#Table").append('<tr><td>' + value.Code + '</td><td>' + value.Name + '</td><td>' + value.Semester + '</td><td>' + value.TeacherName + '</td></tr>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

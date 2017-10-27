@@ -1,0 +1,335 @@
+﻿@model UniversityCourseAndResultManagementSystemWebApp.Models.AssignModel
+@{
+   // Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Assign</title>
+    <link href="~/CSS/jquery-ui.min.css" rel="stylesheet" />
+    <style>
+        label.error {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <form method="POST" id="myForm">
+
+            <table align=" center" style="width: 593px; height: 141px; border: none">
+                <tr>
+                    <td style="border: none" class="auto-style1">
+                        <fieldset style="text-align: center; height: auto; width: 650px;">
+                            <legend style="text-align: left; font-size: 25px;">Course Assign to Teacher</legend><br /><br />
+                            @ViewBag.message
+                            <table>
+                                <tr>
+                                    <td style="text-align: left;">@Html.LabelFor(m => m.DepartmentId, "Department")</td>
+                                    <td style="text-align: left;">
+                                        <select name="DepartmentId" id="DepartmentId" style="width: 171px;">
+                                            <option value="">Select...</option>
+                                            @foreach (var department in ViewBag.departments)
+                                            {
+                                                <option value="@department.Id">@department.Code</option>
+                                            }
+                                        </select>
+                                    </td>
+
+                                </tr>
+                                <tr>
+
+                                    <td style="text-align: left;">@Html.LabelFor(m => m.TeacherId, "Teacher")</td>
+                                    <td style="text-align: left;">
+                                        <select name="TeacherId" id="TeacherId" style="width: 171px">
+                                            <option value=" ">Select...</option>
+                                        </select>
+                                        <input type="text" name="TeacherName" id="TeacherName" hidden />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="text-align: left">Credit To Be Taken</td>
+                                    <td style="text-align: left;">
+                                        <input type="text" id="CreditTaken" name="CreditTaken" readonly="readonly" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left">Remaining Credit</td>
+                                    <td style="text-align: left;">
+                                        <input type="number" id="RemainingCredit" name="RemainingCredit" readonly />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left">Corse Code</td>
+                                    <td style="text-align: left;">
+                                        <select name="CourseId" id="CourseId" style="width: 171px">
+                                            <option value="">Select...</option>
+
+                                        </select>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left">Name</td>
+                                    <td style="text-align: left;">
+                                        <input type="text" name="Name" id="Name" readonly />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left">Credit</td>
+                                    <td style="text-align: left;">
+                                        <input type="number" name="Credit" id="Credit" readonly />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="text-align: left">
+                                        <input type="submit" value="Assign" id="submit" onclick="myFunction()" />
+                                        <div id="dialog-confirm"></div>
+                                    </td>
+
+                                </tr>
+                            </table>
+                            <br />
+                            <br />
+                        </fieldset>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <script src="~/Scripts/jquery-2.2.0.js"></script>
+        <script src="~/Scripts/jquery.validate.js"></script>
+        <script src="~/Scripts/jquery-ui-1.11.4.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $("#myForm").validate({
+                    rules : {
+                        DepartmentId : {
+                            required : true
+                        },
+                        CourseId : {
+                            required : true
+                        },
+                        TeacherId : {
+                            required : true
+                        }
+                    },
+                    message : {
+                        DepartmentId : {
+                            required : "Please Select a Department"
+                        },
+                        CourseId : {
+                            required: "Please Select a Course"
+                        },
+                        TeacherId : {
+                            required: "Please Select a Teacher"
+                        }
+
+                    }
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+
+                $("#DepartmentId").change(function() {
+
+                    var deptId = $("#DepartmentId").val();
+                    $("#TeacherId").empty();
+                    var json = { departmentId: deptId };
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GetTeacherByDepartmentId", "CourseAssign")',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(json),
+                        success: function(data) {
+                            //alert(data);
+                            $("#TeacherId").append('<option value=>Select...</option>');
+                            $.each(data, function(key, value) {
+                                //alert(key);
+                             
+                                $("#TeacherId").append('<option value=' + value.Id + '>' + value.Name + '</option>');
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                $("#TeacherId").change(function() {
+                    var teacherid = $("#TeacherId").val();
+                    // $("#teacherId").empty();
+                    $("#CreditTaken").empty();
+                    $("#RemainingCredit").empty();
+
+                    var json = { teacherId: teacherid };
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GetDetailsByTeacherId", "CourseAssign")',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(json),
+                        success: function(data) {
+                            $("#CreditTaken").val(data.CreditToBeTaken);
+                            $("#RemainingCredit").val(data.Remaining);
+                            $("#TeacherName").val(data.Name);
+                        }
+                    });
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+
+                $("#DepartmentId").change(function () {
+
+                    var deptId = $("#DepartmentId").val();
+                    $("#CourseId").empty();
+                    var json = { departmentId: deptId };
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GetCoursesByDepartmentId", "CourseAssign")',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(json),
+                        success: function (data) {
+                            //alert(data);
+                            $("#CourseId").append('<option value=>Select...</option>');
+
+                            $.each(data, function (key, value) {
+                                //alert(key);
+                                $("#CourseId").append('<option value=' + value.Id + '>' + value.Code + '</option>');
+
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                $("#CourseId").change(function() {
+                    var courseid = $("#CourseId").val();
+                    //  $("#teacherId").empty();
+                    var json = { courseId: courseid };
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GetDetailsByCourseId", "CourseAssign")',
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(json),
+                        success: function(data) {
+                            $("#Name").val(data.Name);
+                            $("#Credit").val(data.Credit);
+                        }
+                    });
+                });
+            });
+        </script>
+        @*<script>
+
+            //var value1 = $("#RemainingCredit").val() - $("#Credit").val();
+
+            function fnOpenNormalDialog() {
+                $("#dialog-confirm").html("Confirm Dialog Box");
+
+                // Define the Dialog and its properties.
+                $("#dialog-confirm").dialog({
+                    resizable: false,
+                    modal: true,
+                    title: "Modal",
+                    height: 250,
+                    width: 400,
+                    buttons: {
+                        "Yes": function() {
+                            $(this).dialog('close');
+                            callback(true);
+                        },
+                        "No": function() {
+                            $(this).dialog('close');
+                            callback(false);
+                        }
+                    }
+                });
+            }
+
+            function myFunction() {
+               
+                var first = $("#RemainingCredit").val();
+                var second = $("#Credit").val();
+
+                var json = { rem: first, credit: second };
+               
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetValue", "CourseAssign")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        if (data.result<0) {
+                            confirm(data.result);
+                        }
+                    }
+                });
+            }
+            function callback(value) {
+                if (value) {
+                    alert("Confirmed");
+                } else {
+                    alert("Rejected");
+                }
+            }
+        </script>*@
+        <script>
+            function fnOpenNormalDialog() {
+                $("#dialog-confirm").html("Confirm Dialog Box");
+
+                // Define the Dialog and its properties.
+                $("#dialog-confirm").dialog({
+                    resizable: false,
+                    modal: true,
+                    title: "Modal",
+                    height: 250,
+                    width: 400,
+                    buttons: {
+                        "Yes": function () {
+                            $(this).dialog('close');
+                            callback(true);
+                        },
+                        "No": function () {
+                            $(this).dialog('close');
+                            callback(false);
+                        }
+                    }
+                });
+            }
+
+
+            function myFunction() {
+                var first = $("#RemainingCredit").val();
+                var second = $("#Credit").val();
+                var value1 = first - second;
+                alert(value1);
+               if (value1 < 0) {
+                 
+               }
+
+            }
+
+            function callback(value) {
+                if (value) {
+                    confirm("Acepted");
+                } else {
+                    confirm("Rejected");
+                }
+            }
+        </script>
+
+    </div>
+</body>
+</html>

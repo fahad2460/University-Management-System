@@ -1,0 +1,81 @@
+﻿
+@{
+   // Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Save</title>
+    <style>
+         label.error {
+             color: red;
+             font-style: italic
+         }
+    </style>
+</head>
+<body>
+    <div>
+        <form id="myForm" method="POST">
+            <table align="center" style="width: 717px">
+                <tr>
+                    <td>
+                        <fieldset style="text-align: center; height: 157px;">
+                            <legend style="text-align: left; font-size: 25px;">Save Department</legend><br />
+                            @ViewBag.Message
+                            <table align="center" style="width: 484px">
+                                <tr>
+                                    <td style="width: 50px"><label for="Code;">Code</label></td>
+                                    <td style="text-align: left"><input type="text" name="Code" id="Code" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 50%"><label for="Name">Name</label></td>
+                                    <td style="text-align: left"><input type="text" name="Name" id="Name" /></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="text-align: center;" colspan="2"><input type="submit" value="Save" style="width: 69px" /></td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <script src="~/Scripts/jquery-2.2.0.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            $("#myForm").validate({
+                rules: {
+                    Code: {
+                        required: true,
+                        rangelength: [2, 7]
+                    },
+                    Name: {
+                        required: true
+                    }
+                },
+                messages: {
+                    Code : {
+                        required: "Please Enter Code",
+                        rangelength: "Code must be 2 to 7 Characters Long"
+                    },
+                    Name: {
+                        required: "Please Enter Name"
+        }
+                    
+                }
+            });
+        });
+    </script>
+    
+    
+
+</body>
+</html>

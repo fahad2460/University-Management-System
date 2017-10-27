@@ -1,0 +1,75 @@
+﻿@model List<UniversityCourseAndResultManagementSystemWebApp.Models.Department>
+@{
+    //Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewDepartment</title>
+    <style type="text/css">
+        #Code {
+            width: 165px;
+        }
+
+        #Name {
+            width: 168px;
+        }
+
+        #tableclass table, th, td {
+            border-collapse: collapse;
+            border: 1px solid black;
+            width: 266px;
+        }
+
+        #tableclass th {
+            background-color: #00FF00;
+            color: white;
+        }
+
+        .auto-style1 {
+            height: 147px;
+        }
+    </style>
+
+</head>
+    <body>
+        <form id="form1" runat="server">
+            <div>
+                <table align="center" style="width: 593px; height: 141px; border: none ">
+                    <tr>
+                        <td style="border: none" class="auto-style1">
+                            <fieldset style="text-align: center; height: auto; width: 585px;">
+                                <legend style="text-align: left; font-size: 25px;">View All Departments</legend><br />
+
+                                <br />
+                                <div id="tableclass">
+                                    <table align="center" style="width: 530px;">
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Name</th>
+                                        </tr>
+                                        @foreach (var dept in Model)
+                                        {
+                                            <tr>
+                                                <td>@dept.Code</td>
+                                                <td>@dept.Name</td>
+                                            </tr>
+                                            
+                                        }
+
+                                    </table>
+                                </div>
+                                <br />
+                                <br />
+                            </fieldset>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+      
+    </body>
+</html>

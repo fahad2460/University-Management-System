@@ -1,0 +1,146 @@
+﻿@{
+    //Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EnrollCourse</title>
+</head>
+<body>
+    <div>
+        <form method="post" id="myForm">
+            <fieldset>
+                <legend>Save Result</legend>
+
+                <table align="center">
+
+                    <tr>
+                        <td>
+                            <label>
+                                @if (ViewBag.Message != null)
+                                {
+                                    <p>@ViewBag.Message </p>
+                                }
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label>Student Reg. No.</label>
+                        </td>
+                        <td>
+                            <select name="RegNo" id="RegNo">
+                                <option value="">Select...</option>
+                                @foreach (var reg in ViewBag.ShowRegNo)
+                                {
+                                    <option id="@reg.Id" value="@reg.RegNo">@reg.RegNo</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Student Name</label>
+                        </td>
+                        <td>
+
+                            <input type="text" name="Name" id="Name" readonly="readonly"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Student Email</label>
+                        </td>
+                        <td>
+                            <input type="text" name="Email" id="Email" readonly="readonly"/>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Department Name</label>
+                        </td>
+
+                        <td>
+                            <input type="text" name="DepartmentName" id="DepartmentName" readonly="readonly"/>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>
+                            <label>Course Name</label>
+                        </td>
+                        <td>
+                            <select name="CourseId" id="CourseId"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Grade</label>
+                        </td>
+                        <td>
+                            <div class="form-row">
+                                <select name="Grade" id="Grade">
+                                    <option value="">Select...</option>
+                                    @foreach (var reg in ViewBag.ShowGrade)
+                                    {
+                                        <option value="@reg.Grade">@reg.Grade</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <input type="hidden" name="Id" id="StudentId"/>
+                                <input type="submit" value="Save Result" id="enroll"/>
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+            </fieldset>
+        </form>
+    </div>
+
+    <script src="~/Scripts/jquery-2.2.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#RegNo").change(function () {
+
+                var regNo = $("#RegNo").val();
+                $("#CourseId").empty();
+                $("#Name").empty();
+                $("#Email").empty();
+                $("#DepartmentName").empty();
+               
+                var json = { RegNo: regNo };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetStudentByRegNos", "SaveResult")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+
+                        $.each(data, function (key, value) {
+                          
+                            $("#CourseId").append('<option value=' + value.CourseId + '>' + value.CourseName + '</option>');
+
+                        });
+                        $('#Name').val(data[0].Name);
+                        $('#Email').val(data[0].Email);
+                        $('#DepartmentName').val(data[0].DepartmentName);
+                        $('#StudentId').val(data[0].Id);
+                    }
+                });
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>

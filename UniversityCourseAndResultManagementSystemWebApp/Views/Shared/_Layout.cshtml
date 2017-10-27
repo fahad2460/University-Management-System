@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="~/CSS/jquery-ui.min.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Department", "Save", "Department")</li>
+                    <li>@Html.ActionLink("View Department", "ViewDepartment", "Department")</li>
+                    <li>@Html.ActionLink("Course", "Save", "Course")</li>
+                    <li>@Html.ActionLink("Teacher", "Save", "Teacher")</li>
+                    <li>@Html.ActionLink("Assign Course", "Assign", "CourseAssign")</li>
+                    <li>@Html.ActionLink("View Course Statics", "ViewAssignCourse", "ViewCourseAssign")</li>
+                    <li>@Html.ActionLink("Student", "Save", "Student")</li>
+                </ul>
+           
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>*@
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - My ASP.NET Application</title>
+        @Styles.Render("~/Content/css")
+
+        <link href="~/Content/bootstrap.css" rel="stylesheet" />
+        <link href="~/css/simple-sidebar.css" rel="stylesheet" />
+
+    </head>
+    <body>
+        @*<div class="navbar navbar-inverse">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@Html.ActionLink("Contact", "Save", "Date")</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>*@
+        <div id="wrapper">
+
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container">
+                    <h2 style="color: white; text-align: center">University Management System</h2>
+                    @*<div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+                        </div>*@
+                    @*<div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                                <li>@Html.ActionLink("About", "About", "Home")</li>
+                                <li>@Html.ActionLink("Contact", "Save", "Date")</li>
+                            </ul>
+
+                        </div>*@
+                </div>
+            </div>
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                        @Html.ActionLink("Home", "Index", "Home")
+                    </li>
+                    <li>@Html.ActionLink("Department", "Save", "Department")</li>
+                    <li>@Html.ActionLink("View Department", "ViewDepartment", "Department")</li>
+                    <li>@Html.ActionLink("Course", "Save", "Course")</li>
+                    <li>@Html.ActionLink("Teacher", "Save", "Teacher")</li>
+                    <li>@Html.ActionLink("Assign Course", "Assign", "CourseAssign")</li>
+                    <li>@Html.ActionLink("View Course Statics", "ViewAssignCourse", "ViewCourseAssign")</li>
+                    <li>@Html.ActionLink("Student", "Save", "Student")</li>
+                    <li>@Html.ActionLink("ClassRoom Allocation", "SaveRoom", "RoomAllocation")</li>
+                    <li>@Html.ActionLink("View Class Schedule", "ViewSchedule", "ClassSchedule")</li>
+                    <li>@Html.ActionLink("Enroll In A Course", "EnrollCourse", "EnrollCourse")</li>
+                    <li>@Html.ActionLink("Save Student Result", "SaveResult", "SaveResult")</li>
+                    <li>@Html.ActionLink("View Result", "ViewResult", "ViewResult")</li>
+                </ul>
+            </div>
+
+            @*<div class="container body-content">
+                    @RenderBody()
+                    <hr />
+                    <footer>
+                        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                    </footer>
+                </div>*@
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @RenderBody()
+                            <hr />
+                            <footer style="text-align: center">
+                                <p>&copy; @DateTime.Now.Year - UNIVERSITY APPLICATION</p>
+                                <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                            </footer>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <script src="~/Scripts/jquery-2.2.0.js"></script>
+        <script src="~/Scripts/jquery.validate.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+       
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/jquery-ui-1.11.4.js"></script>
+
+
+        <script>
+            $("#menu-toggle").click(function (e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+        </script>
+    </body>
+</html>
+
+   
+</body>
+</html>

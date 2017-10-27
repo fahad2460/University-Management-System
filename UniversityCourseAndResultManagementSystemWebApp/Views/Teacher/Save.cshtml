@@ -1,0 +1,125 @@
+﻿@using UniversityCourseAndResultManagementSystemWebApp.Models
+@model UniversityCourseAndResultManagementSystemWebApp.Models.Teacher
+@{
+   // Layout = null;
+    List<Department> departments = ViewBag.departments;
+    List<Designation> designations = ViewBag.designations;
+    
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Save</title>
+    <style>
+        .field-validation-error {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+</head>
+    <body>
+        
+            <div>
+                @using (Html.BeginForm())
+                {
+                    <table align="center" style="width: 593px; height: 141px; border: none">
+                        <tr>
+                            <td style="border: none" class="auto-style1">
+                                <fieldset style="text-align: center; height: auto; width: 700px;">
+                                    <legend style="text-align: left; font-size: 25px;">Save Teacher</legend><br />
+                                    @ViewBag.message
+                                    <br />
+                                    <table align="center" style="width: 650px; height: 197px">
+                                        <tr>
+                                            <td style="text-align: left; width: 128px">@Html.LabelFor(m => m.Name)</td>
+                                            <td style="text-align: left; width: 173px">@Html.TextBoxFor(m => m.Name)</td>
+                                            <td style="text-align: left; width: 350px">@Html.ValidationMessageFor(m => m.Name)</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left; width: 79px">@Html.LabelFor(m => m.Address)</td>
+                                            <td style="text-align: left">
+                                                @Html.TextAreaFor(m => m.Address, new { style="width: 167px;"})
+                                            </td>
+                                            <td style="text-align: left">@Html.ValidationMessageFor(m => m.Address)</td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td style="text-align: left; width: 79px">@Html.LabelFor(m => m.Email)</td>
+                                            <td style="text-align: left">@Html.TextBoxFor(m => m.Email)</td>
+                                            <td style="text-align: left">@Html.ValidationMessageFor(m => m.Email)</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left; width: 79px">@Html.LabelFor(m => m.ContactNo)</td>
+                                            <td style="text-align: left">@Html.TextBoxFor(m => m.ContactNo)</td>
+                                            <td style="text-align: left">@Html.ValidationMessageFor(m => m.ContactNo)</td>
+
+                                        </tr>
+                                        
+                                            <tr>
+                                                <td style="text-align: left; width: 79px">@Html.LabelFor(m => m.DesignationId)</td>
+                                                @*<td style="text-align: left">
+                                                    <select name="DesignationId" id="DesignationId" style="width: 173px">
+                                                        <option value="">Select...</option>
+                                                        @foreach (var designation in designations)
+                                                        {
+                                                            <option value="@designation.Id">@designation.Name</option>
+                                                        }
+                                                    </select>
+                                                </td>*@
+                                                <td style="text-align: left">
+                                                    @Html.DropDownListFor(m => m.DesignationId, new SelectList(ViewBag.designations, "Id", "Name"), "Select...", new { style = "width: 172px;" })
+                                                </td>
+                                                <td style="text-align: left">@Html.ValidationMessageFor(m => m.DesignationId)</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: left; width: 79px">@Html.LabelFor(m => m.DepartmentId)</td>
+                                                @*<td style="text-align: left">
+                                                    <select name="DepartmentId" id="DepartmentId" style="width: 173px">
+                                                        <option value="">Select...</option>
+                                                        @foreach (var dept in departments)
+                                                        {
+                                                            <option value="@dept.Id">@dept.Code</option>
+                                                        }
+                                                    </select>
+                                                </td>*@
+                                                <td style="text-align: left">
+                                                    @Html.DropDownListFor(m => m.DepartmentId, new SelectList(ViewBag.departments, "Id", "Code"), "Select...", new { style = "width: 172px;" })
+                                                </td>
+                                                <td style="text-align: left">@Html.ValidationMessageFor(m => m.DepartmentId)</td>
+
+                                            </tr>
+                                       
+                                        <tr>
+                                            <td style="text-align: left; width: 79px">@Html.LabelFor(m => m.CreditToBeTaken)</td>
+                                            <td style="text-align: left">@Html.TextBoxFor(m => m.CreditToBeTaken)</td>
+                                            <td style="text-align: left">@Html.ValidationMessageFor(m => m.CreditToBeTaken)</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="3" style="text-align: center"><input type="submit" value="Save" /></td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <br />
+                                </fieldset>
+                            </td>
+                        </tr>
+                    </table>
+                }
+            </div>
+        
+        <script src="~/Scripts/jquery-2.2.0.js"></script>
+        <script src="~/Scripts/jquery.validate.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+      
+        
+       
+    </body>
+</html>

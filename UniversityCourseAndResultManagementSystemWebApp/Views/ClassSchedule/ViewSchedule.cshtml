@@ -1,0 +1,155 @@
+﻿
+@using UniversityCourseAndResultManagementSystemWebApp.Models
+
+
+@{
+    //Layout = null;
+ 
+}
+
+<!DOCTYPE html>
+<style>
+    table {
+        border: 1px solid #666;
+        width: 100%;
+    }
+
+    th {
+        background: #f8f8f8;
+        font-weight: bold;
+        padding: 2px;
+    }
+
+    td {
+        background: #f8f8f8;
+        font-weight: bold;
+        padding: 2px;
+        border: 2px;
+    }
+    tr.space >td {
+        padding-bottom: 5em;
+        padding-left: 5em;
+    }
+</style>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewSchedule</title>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        <fieldset>
+            <legend>View Class Schedule And Room Allocation</legend>
+            <table>
+                <tr class="space">
+                    <td ></td>
+                    <td>Select Department
+                        <select name="DepartmentId" id="departmentId">
+                            <option value="">Select Department</option>
+                            @foreach (var departments in ViewBag.ShowDepartments)
+                            {
+                                <option value="@departments.Id">@departments.Name</option>
+                            }
+                        </select>
+
+                    </td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+
+            </table>
+            <table id="table">
+              
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Schedule Info</th>
+                </tr>
+               
+                
+
+            </table>
+        </fieldset>
+    }
+
+        <script src="~/Scripts/jquery-2.2.0.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $("#departmentId").change(function () {
+
+                var deptId = $("#departmentId").val();
+                //$("#courseId").empty();
+                var json = { departmentId: deptId };
+                $("#table").empty();
+                $("#table").append('<table class="table"><tr><th>Course Code</th><th>Name</th><th>Schedule Info</th></tr>');
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ViewAllScheduleByDept", "ClassSchedule")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+
+                        $.each(data, function (key, value) {
+
+                            var ds = new Date(parseInt(value.StartTime.substr(6)));
+                            var hhs = ds.getHours();
+                            var ms = ds.getMinutes();
+                            //var s = d.getSeconds();
+                            var dds = "AM";
+                            var hs = hhs;
+                            if (hs >= 12) {
+                                hs = hhs - 12;
+                                dds = "PM";
+                            }
+                            if (hs == 0) {
+                                hs = 12;
+                            }
+                            ms = ms < 10 ? "0" + ms : ms;
+                            var replacementSt = hs + ":" + ms + dds;
+
+
+
+                            var de = new Date(parseInt(value.EndTime.substr(6)));
+                            var hhe = de.getHours();
+                            var me = de.getMinutes();
+                            //var s = d.getSeconds();
+                            var dde = "AM";
+                            var he = hhe;
+                            if (he >= 12) {
+                                he= hhe - 12;
+                                dde = "PM";
+                            }
+                            if (he == 0) {
+                                he = 12;
+                            }
+                            me = me < 10 ? "0" + me : me;
+                            var replacementEt = he + ":" + me + dde;
+
+                            
+
+
+
+
+                            var scheduleInfo;
+                            if (value.RoomName==="Not sheduled yet") {
+                                scheduleInfo = "Not Assigned";
+                            } else {
+                                scheduleInfo = value.RoomName + " " + value.DayName + " " + replacementSt+ "-"+ replacementEt  ;
+                            }
+                             
+               
+                            $("#table").append('<tr><td>' + value.Code + '</td><td>' + value.Name + '</td><td>' + scheduleInfo + '      </td></tr>');
+
+                        });
+                        $('#table').append('</table>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
